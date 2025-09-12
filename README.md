@@ -1,40 +1,11 @@
-####################################################################################
-#                                                                                  #
-#   ██████╗ ███████╗████████╗    ███████╗██╗    ██╗██╗███████╗████████╗██╗   ██╗ #
-#  ██╔════╝ ██╔════╝╚══██╔══╝    ██╔════╝██║    ██║██║██╔════╝╚══██╔══╝╚██╗ ██╔╝ #
-#  ██║  ███╗█████╗     ██║       ███████╗██║ █╗ ██║██║█████╗     ██║     ╚████╔╝  #
-#  ██║   ██║██╔══╝     ██║       ╚════██║██║███╗██║██║██╔══╝     ██║      ╚██╔╝   #
-#  ╚██████╔╝███████╗   ██║       ███████║╚███╔███╔╝██║██╗        ██║       ██║    #
-#   ╚═════╝ ╚══════╝   ╚═╝       ╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝        ╚═╝       ╚═╝    #
-#                                                                                  #
-####################################################################################
-#
-# Project Name: MAC Address Spoofer
-#
-# Author: @spacewelder314
-#
-# Date Created: 2025-08-21
-#
-# Last Modified: 2025-09-01
-#
-# Version: 1.0.0
-#
-# Description: Cross-platform MAC address spoofing utility with dark mode GUI
-#              and Python backend for network interface management
-#
-# Language/Framework: JavaScript/Electron + Python backend
-#
-# Usage: npm start (development) or run the compiled app from dist/
-#
-# Dependencies: electron@^27.0.0, electron-builder@^24.6.4, Python 3.8+
-#
-# GitHub: https://github.com/spacewelder314/MAC_Spoofer
-#
-# Notes: Network utility tool for legitimate MAC address spoofing purposes
-#
-####################################################################################
+# MACSpoofer - Network Interface Manager
 
-# MAC Address Spoofer
+> Cross-platform MAC address spoofing utility with dark mode GUI and Python backend
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Electron](https://img.shields.io/badge/electron-27.0+-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
 
 A professional cross-platform desktop application for secure MAC address spoofing with an intuitive dark mode interface.
 
