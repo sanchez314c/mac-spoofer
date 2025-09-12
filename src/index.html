@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAC Address Spoofer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🌐</div>
+                    <h1 class="app-title">MAC Address Spoofer</h1>
+                </div>
+                <div class="header-controls">
+                    <button id="refreshBtn" class="btn btn-secondary" title="Refresh Interface List">
+                        <span class="icon">🔄</span>
+                        Refresh
+                    </button>
+                    <div class="admin-status" id="adminStatus">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">Checking privileges...</span>
+                        <button id="authBtn" class="btn btn-small btn-primary" style="display: none; margin-left: 0.5rem;">
+                            <span class="icon">🔐</span>
+                            Authenticate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Interface Selection Panel -->
+            <section class="panel interface-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <span class="icon">📡</span>
+                        Network Interfaces
+                    </h2>
+                </div>
+                <div class="panel-content">
+                    <div class="interface-list" id="interfaceList">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading interfaces...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Controls Panel -->
+            <section class="panel controls-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <span class="icon">⚙️</span>
+                        MAC Address Controls
+                    </h2>
+                </div>
+                <div class="panel-content">
+                    <div class="selected-interface" id="selectedInterface">
+                        <p class="no-selection">Select a network interface to begin</p>
+                    </div>
+
+                    <div class="mac-options" id="macOptions" style="display: none;">
+                        <div class="option-group">
+                            <label class="radio-option">
+                                <input type="radio" name="macType" value="random" checked>
+                                <span class="radio-custom"></span>
+                                <div class="option-content">
+                                    <span class="option-title">Generate Random MAC</span>
+                                    <span class="option-desc">Create a safe, locally administered MAC address</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="option-group">
+                            <label class="radio-option">
+                                <input type="radio" name="macType" value="custom">
+                                <span class="radio-custom"></span>
+                                <div class="option-content">
+                                    <span class="option-title">Custom MAC Address</span>
+                                    <span class="option-desc">Enter your own MAC address</span>
+                                </div>
+                            </label>
+                            <div class="custom-mac-input" id="customMacInput">
+                                <input type="text" id="customMacField" placeholder="02:XX:XX:XX:XX:XX" maxlength="17">
+                                <button id="generateBtn" class="btn btn-small" title="Generate Random MAC">
+                                    <span class="icon">🎲</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="spoofBtn" class="btn btn-primary">
+                                <span class="icon">🎭</span>
+                                Spoof MAC Address
+                            </button>
+                            <button id="restoreBtn" class="btn btn-warning" style="display: none;">
+                                <span class="icon">↩️</span>
+                                Restore Original
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Panel -->
+            <section class="panel status-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <span class="icon">📊</span>
+                        Interface Status
+                    </h2>
+                </div>
+                <div class="panel-content">
+                    <div class="status-grid" id="statusGrid">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading status...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>⚠️ <strong>Important:</strong> Use responsibly and in accordance with local laws and network policies.</p>
+                </div>
+                <div class="footer-links">
+                    <button id="aboutBtn" class="btn-link">About</button>
+                    <button id="helpBtn" class="btn-link">Help</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner large"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
