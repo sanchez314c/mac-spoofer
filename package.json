@@ -23,12 +23,30 @@
     "dist:linux:deb": "electron-builder --linux --config.linux.target=deb",
     "dist:linux:rpm": "electron-builder --linux --config.linux.target=rpm",
     "dist:linux:snap": "electron-builder --linux --config.linux.target=snap",
-    "dist:maximum": "electron-builder --mac --win --linux --x64 --arm64 --ia32",
+    "dist:maximum": "electron-builder --mac --win --linux --x64 --arm64 --ia32 --armv7l",
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
     "bloat-check": "./scripts/bloat-check.sh",
     "temp-clean": "./scripts/temp-cleanup.sh",
-    "build-clean": "./scripts/compile-build-dist.sh --no-temp-clean --no-bloat-check"
+    "build-clean": "./scripts/compile-build-dist.sh --no-temp-clean --no-bloat-check",
+    "build:production": "./scripts/compile-build-dist.sh --platform all",
+    "build:quick": "./scripts/compile-build-dist.sh --quick",
+    "build:mac-only": "./scripts/compile-build-dist.sh --platform mac",
+    "build:win-only": "./scripts/compile-build-dist.sh --platform win",
+    "build:linux-only": "./scripts/compile-build-dist.sh --platform linux",
+    "clean": "rm -rf dist/ build/ out/ node_modules/.cache/ build-temp/",
+    "clean:all": "npm run clean && npm run temp-clean",
+    "deps:update": "npm update",
+    "deps:check": "npm outdated",
+    "deps:audit": "npm audit",
+    "deps:audit:fix": "npm audit fix",
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint src/ --ext .js,.jsx,.ts,.tsx --fix",
+    "type-check": "echo 'TypeScript checking not yet configured for this JavaScript project'",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "test": "echo 'Tests not yet configured'",
+    "prepare": "echo 'Preparation complete'"
   },
   "keywords": [
     "mac-spoofing",
@@ -39,11 +57,26 @@
   "author": "Jason Paul Michaels",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^27.0.0",
-    "electron-builder": "^24.6.4"
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.6.2"
   },
   "dependencies": {
-    "electron-store": "^8.1.0"
+    "@types/node": "^24.9.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "electron-store": "^11.0.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
   },
   "build": {
     "appId": "com.jasonpaulmichaels.macspoofer",
@@ -77,35 +110,47 @@
     "compression": "maximum",
     "mac": {
       "category": "public.app-category.utilities",
-      "icon": "build-resources/icon.icns",
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
-      "entitlements": "build-resources/entitlements.mac.plist",
-      "entitlementsInherit": "build-resources/entitlements.mac.plist",
+      "identity": null,
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64", "universal"]
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64", "universal"]
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
         },
         {
           "target": "pkg",
-          "arch": ["x64", "arm64", "universal"]
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
         }
       ]
     },
     "mas": {
       "category": "public.app-category.utilities",
-      "icon": "build-resources/icon.icns",
       "hardenedRuntime": true,
       "entitlements": "build-resources/entitlements.mas.plist",
       "entitlementsInherit": "build-resources/entitlements.mas.inherit.plist",
       "target": {
         "target": "mas",
-        "arch": ["x64", "arm64"]
+        "arch": [
+          "x64",
+          "arm64"
+        ]
       }
     },
     "dmg": {
@@ -124,31 +169,39 @@
       ]
     },
     "win": {
-      "icon": "build-resources/icon.ico",
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "msi",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ]
     },
     "nsis": {
       "oneClick": false,
-      "installerIcon": "build-resources/icon.ico",
-      "uninstallerIcon": "build-resources/icon.ico",
-      "installerHeaderIcon": "build-resources/icon.ico",
       "allowToChangeInstallationDirectory": true,
       "perMachine": false,
       "createDesktopShortcut": true,
@@ -166,40 +219,66 @@
       "requestExecutionLevel": "user"
     },
     "linux": {
-      "icon": "build-resources/icons",
       "category": "Network",
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         },
         {
           "target": "rpm",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         },
         {
           "target": "snap",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         },
         {
           "target": "tar.xz",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         },
         {
           "target": "tar.gz",
-          "arch": ["x64", "arm64", "armv7l"]
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
         }
       ],
       "desktop": {
-        "StartupNotify": "true",
-        "Encoding": "UTF-8",
-        "Icon": "mac-address-spoofer",
-        "Type": "Application",
-        "Categories": "Network;Utility;"
+        "entry": {
+          "Name": "MAC Address Spoofer",
+          "Comment": "Cross-platform MAC address spoofing utility",
+          "Icon": "mac-address-spoofer",
+          "Type": "Application",
+          "Categories": "Network;Utility;",
+          "StartupNotify": "true"
+        }
       }
     },
     "deb": {
@@ -233,9 +312,6 @@
       "summary": "Cross-platform MAC address spoofing utility with dark mode GUI",
       "confinement": "strict",
       "base": "core20"
-    },
-    "appImage": {
-      "systemIntegration": "ask"
     },
     "publish": [
       {
