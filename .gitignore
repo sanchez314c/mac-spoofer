@@ -288,5 +288,8 @@ temp/
 config/local.*
 
 # Application specific
-MAC Address Spoofer.app aliasarchive/
+MAC Address Spoofer.app alias
+
+# Archive
+archive/
 dist/
