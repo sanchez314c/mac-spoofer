@@ -7,6 +7,12 @@
 ![Electron](https://img.shields.io/badge/electron-39.0+-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
 
+## 📸 Main Interface
+
+![MAC Spoofer Screenshot](build_resources/screenshots/mac-spoofer-light-mode.jpg)
+
+> The Ultimate MAC Address Spoofer - Professional Network Interface Management
+
 A professional cross-platform desktop application for secure MAC address spoofing with an intuitive dark mode interface.
 
 ## 📸 Screenshots
