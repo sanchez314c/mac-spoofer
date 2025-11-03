@@ -9,6 +9,25 @@
 
 A professional cross-platform desktop application for secure MAC address spoofing with an intuitive dark mode interface.
 
+## 📸 Screenshots
+
+<details>
+<summary>View Screenshots</summary>
+
+### Dark Mode Interface
+![Dark Mode Interface](build_resources/screenshots/mac-spoofer-dark-mode.png)
+*Main interface in dark mode showing network interfaces and MAC address controls*
+
+### Light Mode Interface
+![Light Mode Interface](build_resources/screenshots/mac-spoofer-light-mode.jpg)
+*Alternative interface view with comprehensive network interface listing*
+
+### Original Interface
+![Original Interface](build_resources/screenshots/mac-spoofer-interface.jpg)
+*Classic interface showing MAC address spoofing controls and status indicators*
+
+</details>
+
 ## 🚀 Quick Start
 
 ### For End Users - Download Binaries
