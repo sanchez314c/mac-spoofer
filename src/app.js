@@ -23,6 +23,7 @@ class MACSpooferUI {
     this.setupEventListeners();
     this.setupRadioHandlers();
     this.setupWindowControls();
+    this.setupAboutModal();
     await this.checkAdminPrivileges();
     await this.loadInterfaces();
     await this.loadStatus();
@@ -620,53 +621,47 @@ class MACSpooferUI {
     }, 5000);
   }
 
-  async showAboutDialog() {
-    await window.electronAPI.showMessage({
-      type: 'info',
-      title: 'About MAC Address Spoofer',
-      message: `MAC Address Spoofer v1.0.0
+  setupAboutModal() {
+    const aboutBtn = document.getElementById('aboutBtn');
+    const aboutModal = document.getElementById('aboutModal');
+    const aboutClose = document.getElementById('aboutClose');
+    const aboutGithub = document.getElementById('aboutGithub');
+    const aboutEmail = document.getElementById('aboutEmail');
 
-A cross-platform utility for safely spoofing MAC addresses on Windows, macOS, and Linux.
+    if (aboutBtn) {
+      aboutBtn.addEventListener('click', () => {
+        aboutModal.classList.add('show');
+      });
+    }
 
-Features:
-• Cross-platform compatibility
-• Safe MAC generation (locally administered)
-• Original MAC backup and restore
-• Comprehensive logging
-• Neo Noir Glass Monitor theme
+    if (aboutClose) {
+      aboutClose.addEventListener('click', () => {
+        aboutModal.classList.remove('show');
+      });
+    }
 
-Created by Jason Paul Michaels
+    // Close on overlay click (outside the modal card)
+    if (aboutModal) {
+      aboutModal.addEventListener('click', (e) => {
+        if (e.target === aboutModal) {
+          aboutModal.classList.remove('show');
+        }
+      });
+    }
 
-⚠️ Use responsibly and in accordance with local laws and network policies.`,
-    });
-  }
+    if (aboutGithub) {
+      aboutGithub.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.electronAPI.openExternal('https://github.com/sanchez314c/mac-spoofer');
+      });
+    }
 
-  async showHelpDialog() {
-    await window.electronAPI.showMessage({
-      type: 'info',
-      title: 'Help - MAC Address Spoofer',
-      message: `How to use MAC Address Spoofer:
-
-1. ADMIN PRIVILEGES: Make sure to run the application as Administrator (Windows) or with sudo (macOS/Linux)
-
-2. SELECT INTERFACE: Choose a network interface from the list on the left
-
-3. CHOOSE MAC TYPE:
-   • Random MAC: Generates a safe, locally administered MAC address
-   • Custom MAC: Enter your own MAC address (format: XX:XX:XX:XX:XX:XX)
-
-4. SPOOF: Click "Spoof MAC Address" to apply the changes
-
-5. RESTORE: Use "Restore Original" to revert to the original MAC address
-
-IMPORTANT NOTES:
-• Network connection may briefly disconnect during spoofing
-• Some network adapters may not support MAC spoofing
-• Changes are temporary and reset on system restart
-• Always use for legitimate purposes only
-
-For more help, visit the GitHub repository.`,
-    });
+    if (aboutEmail) {
+      aboutEmail.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.electronAPI.openExternal('mailto:software@jasonpaulmichaels.co');
+      });
+    }
   }
 }
 

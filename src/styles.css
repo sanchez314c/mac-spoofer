@@ -1047,4 +1047,188 @@ a,
    UTILITIES
    ================================================== */
 
+/* ==================================================
+   ABOUT BUTTON (Title Bar)
+   ================================================== */
+
+.btn-about {
+  -webkit-app-region: no-drag;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-right: 12px;
+}
+
+.btn-about:hover {
+  background: rgba(20, 184, 166, 0.15);
+  color: var(--accent-teal);
+}
+
+/* ==================================================
+   ABOUT MODAL
+   ================================================== */
+
+.about-overlay {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  background: rgba(10, 11, 14, 0.80);
+  backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  border-radius: var(--radius-xl);
+}
+
+.about-overlay.show {
+  display: flex;
+}
+
+.about-modal {
+  width: 360px;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+  animation: aboutFadeIn 0.25s ease-out;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+@keyframes aboutFadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.about-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  transition: color var(--transition-fast);
+  -webkit-app-region: no-drag;
+}
+
+.about-close:hover {
+  color: var(--text-primary);
+}
+
+.about-icon {
+  margin-bottom: 16px;
+}
+
+.about-icon img {
+  width: 64px;
+  height: auto;
+  object-fit: contain;
+}
+
+.about-app-name {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+
+.about-version {
+  font-size: var(--font-size-xs);
+  color: var(--accent-teal);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.about-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.about-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.about-license {
+  color: var(--text-secondary);
+}
+
+.about-separator {
+  color: var(--border-light);
+}
+
+.about-author {
+  color: var(--text-secondary);
+}
+
+.about-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.about-github-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(6, 182, 212, 0.10));
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  border-radius: var(--radius-full);
+  color: var(--accent-teal);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.1);
+  -webkit-app-region: no-drag;
+}
+
+.about-github-badge:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.25), rgba(6, 182, 212, 0.18));
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.25);
+  transform: translateY(-1px);
+}
+
+.about-email-link {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  -webkit-app-region: no-drag;
+}
+
+.about-email-link:hover {
+  color: var(--accent-teal);
+}
+
+/* ==================================================
+   UTILITIES
+   ================================================== */
+
 .hidden { display: none !important; }

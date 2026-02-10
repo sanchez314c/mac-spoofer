@@ -248,7 +248,7 @@ class MACSpooferApp {
     ipcMain.handle('open-external', async (event, url) => {
       try {
         const parsed = new URL(url);
-        if (!['http:', 'https:'].includes(parsed.protocol)) {
+        if (!['http:', 'https:', 'mailto:'].includes(parsed.protocol)) {
           return { success: false, error: 'Invalid URL protocol' };
         }
         await shell.openExternal(url);
