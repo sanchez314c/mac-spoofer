@@ -61,7 +61,10 @@
     "electron",
     "cross-platform"
   ],
-  "author": "Jason Paul Michaels",
+  "author": {
+    "name": "Jason Paul Michaels",
+    "email": "software@jasonpaulmichaels.co"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron": "^39.0.0",
