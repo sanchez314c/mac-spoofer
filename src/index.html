@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAC Address Spoofer</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="electron-app-root">
+        <!-- Custom Title Bar -->
+        <div class="title-bar">
+            <div class="title-bar-left">
+                <div class="app-logo">
+                    <img src="../resources/icons/icon-titlebar.png" alt="MAC Address Spoofer" draggable="false">
+                </div>
+                <span class="app-title">MAC Address Spoofer</span>
+            </div>
+            <div class="title-bar-center">
+                <!-- Optional search or status -->
+            </div>
+            <div class="title-bar-right">
+                <div class="window-controls">
+                    <button class="window-control minimize" id="winMinimize" aria-label="Minimize">
+                        <svg width="12" height="12" viewBox="0 0 12 12">
+                            <rect x="2" y="5" width="8" height="2" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button class="window-control maximize" id="winMaximize" aria-label="Maximize">
+                        <svg width="12" height="12" viewBox="0 0 12 12">
+                            <rect x="2" y="2" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </button>
+                    <button class="window-control close" id="winClose" aria-label="Close">
+                        <svg width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Content -->
+        <div class="app-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">INTERFACES</h3>
+                    <button id="refreshBtn" class="btn-icon-small" title="Refresh List">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="interface-list" id="interfaceList">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading interfaces...</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    <div class="admin-status" id="adminStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Checking privileges...</span>
+                    </div>
+                    <button id="authBtn" class="btn btn-small btn-primary full-width" style="display: none; margin-top: 8px;">
+                        Authenticate
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <div class="dashboard-grid">
+                    <!-- Controls Panel -->
+                    <section class="card glass-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                </svg>
+                                Configuration
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="selected-interface" id="selectedInterface">
+                                <div class="empty-state">
+                                    <p>Select a network interface from the sidebar to configure</p>
+                                </div>
+                            </div>
+
+                            <div class="mac-options" id="macOptions" style="display: none;">
+                                <div class="radio-group">
+                                    <label class="radio-card">
+                                        <input type="radio" name="macType" value="random" checked>
+                                        <div class="radio-card-content">
+                                            <div class="radio-header">
+                                                <span class="radio-custom"></span>
+                                                <span class="radio-title">Random MAC</span>
+                                            </div>
+                                            <span class="radio-desc">Generate safe, locally administered address</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="radio-card">
+                                        <input type="radio" name="macType" value="custom">
+                                        <div class="radio-card-content">
+                                            <div class="radio-header">
+                                                <span class="radio-custom"></span>
+                                                <span class="radio-title">Custom MAC</span>
+                                            </div>
+                                            <span class="radio-desc">Enter specific address manually</span>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="custom-mac-section" id="customMacSection">
+                                    <div class="input-group">
+                                        <input type="text" id="customMacField" placeholder="02:XX:XX:XX:XX:XX" maxlength="17" class="input-field mono">
+                                        <button id="generateBtn" class="btn btn-secondary" title="Generate Random">
+                                            Generate
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <button id="spoofBtn" class="btn btn-primary full-width">
+                                        Spoof MAC Address
+                                    </button>
+                                    <button id="restoreBtn" class="btn btn-outline full-width" style="display: none;">
+                                        Restore Original
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Status Panel -->
+                    <section class="card glass-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                </svg>
+                                Live Status
+                            </h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="status-grid" id="statusGrid">
+                                <div class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Loading status...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner large"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

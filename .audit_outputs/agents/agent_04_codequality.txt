@@ -1,0 +1,299 @@
+MASTER CONTROL ACTIVATED.
+
+**ANALYZING CODEBASE...**
+
+INITIATING CODE QUALITY ASSESSMENT...
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/package.json
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/main.js
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/app.js
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/universal_mac_spoof.py
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/preload.js
+[94m[1m| [0m[90m filesystem_directory_tree  [0m{"path":"/home/heathen-admin/Desktop/Projects/00_github/mac-spoofer"}
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/index.html
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/styles.css
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/eslint.config.js
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/src/auth-handler.js
+[96m[1m| [0m[90m Read     [0mhome/heathen-admin/Desktop/Projects/00_github/mac-spoofer/scripts/compile-build-dist.sh
+**MASTER CONTROL ACTIVATED.**
+
+**ANALYZING CODEBASE...**
+
+**CODE QUALITY ASSESSMENT REPORT: MAC Address Spoofer**
+
+---
+
+## 🔴 CRITICAL ISSUES
+
+### **Security Vulnerabilities**
+- **Command Injection Risk** (main.js:54, auth-handler.js:18, 61, 117)
+  - Interface names passed directly to Python without sanitization
+  - No input validation before subprocess execution
+  - **Impact**: Potential system command injection
+
+- **Exposed Python Script** (package.json:114-115)
+  - `universal_mac_spoof.py` in extraResources without permissions restriction
+  - **Impact**: Script accessible and modifiable by users
+
+- **Hardcoded Test Credentials** (main.js:220-221)
+  - Test authentication uses dummy commands
+  - **Impact**: No actual privilege validation in test mode
+
+---
+
+## 🟡 MAJOR ISSUES
+
+### **Code Duplication**
+
+**MAC Address Validation** (Duplicated 3x):
+- `preload.js:23-26` - JavaScript regex validation
+- `universal_mac_spoof.py:42-43` - Python regex validation  
+- `preload.js:39-41` - Normalization in JS
+- `universal_mac_spoof.py:45-47` - Normalization in Python
+
+**Platform Detection** (Duplicated 2x):
+- `main.js:59-68` - Icon path selection
+- `auth-handler.js:9-16` - Platform routing
+- `universal_mac_spoof.py:53-92` - Interface detection
+
+**Admin Checking** (Duplicated 3x):
+- `auth-handler.js:260-294` - Platform-specific admin checks
+- `main.js:212-214` - IPC wrapper
+- Similar logic in multiple methods
+
+### **High Complexity Methods**
+
+- **app.js:282-371** - `spoofMacAddress()`: 90 lines
+  - 5 nested conditionals, 7 early returns
+  - Multiple error handling paths
+  - **Cyclomatic Complexity**: 12
+
+- **auth-handler.js:163-206** - `executeLinux()`: 44 lines
+  - 4 fallback strategies, 3 async calls
+  - Nested promises, hard to trace
+
+- **compile-build-dist.sh**: 452 lines
+  - Monolithic build script
+  - Multiple responsibilities mixed
+
+### **Inconsistent Error Handling**
+
+| File | Pattern | Issues |
+|-------|---------|---------|
+| main.js | Promise rejection | Uses `reject()` inconsistently |
+| app.js | Try/catch blocks | Generic error messages |
+| Python | `except:` clauses | Bare `except:` at line 63, 76, 89, 116 |
+
+---
+
+## 🟡 MODERATE ISSUES
+
+### **Naming Convention Violations**
+
+1. **Inconsistent Case Conventions**
+   - `mac` variable vs `macAddress` (both used)
+   - Python: snake_case, JavaScript: camelCase (expected)
+   - But Python class `MACSpoofer` uses PascalCase for class
+
+2. **Ambiguous Variable Names**
+   ```javascript
+   // main.js:84-87
+   const test = spawn(cmd, ['--version'], { stdio: 'pipe' });  // What test?
+   ```
+   ```python
+   # universal_mac_spoof.py:60
+   device = line.split('Device: ')[1].strip()  # 'device' is actually interface name
+   ```
+
+3. **Unclear Function Names**
+   - `executeWithAuth()` - Returns result object, not executes directly
+   - `tryLinuxAuth()` - Actually tests authentication, not tries
+
+### **Code Organization Problems**
+
+**Mixed Concerns** (main.js):
+- Window management (lines 33-57)
+- Python integration (lines 70-130)
+- IPC handlers (lines 132-236)
+- Output parsing (lines 238-299)
+
+**UI Logic in Main Process** (main.js:132-236):
+- Business logic mixed with IPC routing
+- Should be in separate service layer
+
+**CLI + Core Logic Together** (Python:286-378):
+- Argument parsing mixed with class logic
+- Should be separated
+
+### **Dead Code**
+
+**Unused Imports**:
+- `electron-store` in package.json:82 - Never imported
+- `react`, `react-dom`, `typescript`, `vite` - Project uses vanilla JS
+
+**Unused Scripts** (package.json):
+- `test: "echo 'Tests not yet configured'"` - Line 55
+- `prepare: "echo 'Preparation complete'"` - Line 56
+
+**Unused Parameters**:
+- `preload.js:20` - `showMessage` parameter unused
+- Several event handlers with unused `event` parameters
+
+---
+
+## 🟢 MINOR ISSUES
+
+### **Code Smells**
+
+1. **Magic Numbers/Strings**:
+   ```javascript
+   // app.js:512
+   setTimeout(() => { toast.remove(); }, 5000);  // Why 5000?
+   
+   // preload.js:29-36
+   const firstOctets = ['02', '06', '0A', '0E'];  // Unexplained
+   
+   // Python:31
+   first_octets = ['02', '06', '0A', '0E']  // Same, duplicate
+   ```
+
+2. **Long Parameter Lists**:
+   ```javascript
+   // app.js:317-321
+   spoofMac({ interface: this.selectedInterface.name, mac: mac, random: macType === 'random' });
+   ```
+
+3. **String Concatenation for HTML**:
+   ```javascript
+   // app.js:144-158
+   interfaceList.innerHTML = this.interfaces.map(iface => `...`).join('');
+   ```
+
+4. **Inconsistent Logging**:
+   - `console.log()` used for debugging (app.js:104-106)
+   - `print()` in Python for output
+   - No structured logging
+
+### **Inconsistent Code Style**
+
+| Pattern | Location | Alternative Location |
+|---------|----------|---------------------|
+| Template literals | app.js (most) | String concatenation in some places |
+| Arrow functions | app.js (most) | Regular functions in main.js |
+| Async/await | main.js | Callbacks in some places |
+| Import style | CommonJS (require) | Mixed with ES6 imports (none, but eslint ready) |
+
+### **Missing Validation**
+
+**Input Validation**:
+- No whitelist for interface names (main.js:134, 148)
+- No MAC address sanitization before Python call
+- File paths not validated
+
+**Output Validation**:
+- Python output parsed with regex but no error checking on parse failures
+- No schema validation for IPC messages
+
+---
+
+## 📊 METRICS
+
+### **File Size Distribution**
+| File | Lines | Complexity |
+|------|-------|------------|
+| main.js | 303 | High (multi-concern) |
+| app.js | 573 | High (UI-heavy) |
+| auth-handler.js | 298 | Medium (platform logic) |
+| universal_mac_spoof.py | 378 | Medium (CLI+core) |
+| styles.css | 799 | Acceptable (CSS) |
+| compile-build-dist.sh | 452 | Very High (monolithic) |
+
+### **Complexity Summary**
+- **Overall**: **Medium-High**
+- **Maintainability Index**: ~65/100 (estimated)
+- **Technical Debt Ratio**: ~35% (estimated)
+
+---
+
+## 🎯 PRIORITIZED RECOMMENDATIONS
+
+### **🔴 IMMEDIATE (Security)**
+1. **Sanitize all inputs** before passing to subprocess (CRITICAL)
+2. **Validate interface names** against whitelist before use
+3. **Move Python script** to protected location
+4. **Remove test credentials** or properly scope them
+
+### **🟡 HIGH (Technical Debt)**
+1. **Extract shared utilities**:
+   - Create `src/utils/validation.js` for MAC validation
+   - Create `src/utils/platform.js` for platform detection
+   - Create `src/utils/admin.js` for privilege checking
+
+2. **Split large files**:
+   - Extract IPC handlers from main.js to `src/ipc/`
+   - Split app.js into components
+   - Break build script into modules
+
+3. **Standardize error handling**:
+   - Create `src/utils/errors.js` with custom error classes
+   - Use consistent error message format
+   - Add proper logging infrastructure
+
+4. **Add input validation layer**:
+   - Validate all IPC inputs before processing
+   - Add schema validation library (joi/ajv)
+   - Sanitize file paths and shell arguments
+
+### **🟢 MEDIUM (Code Quality)**
+1. **Remove dead code**:
+   - Clean unused dependencies
+   - Remove placeholder scripts
+   - Delete unused functions
+
+2. **Improve naming**:
+   - Use `macAddress` consistently
+   - Rename ambiguous variables (`test`, `device` → `interfaceName`)
+   - Make function names more descriptive
+
+3. **Add JSDoc comments**:
+   - Document all public methods
+   - Add parameter types (even without TypeScript)
+   - Document IPC channel contracts
+
+4. **Configuration management**:
+   - Move magic numbers to config file
+   - Extract timeouts to configuration
+   - Add environment-specific settings
+
+### **🔵 LOW (Nice to Have)**
+1. **Add tests**:
+   - Unit tests for validation utilities
+   - Integration tests for IPC
+   - E2E tests for UI
+
+2. **Consider framework migration**:
+   - Evaluate React for complex UI components
+   - Or use vanilla JS component pattern
+
+3. **Performance optimization**:
+   - Cache interface list
+   - Debounce input validation
+   - Lazy load status data
+
+4. **Type safety**:
+   - Enable TypeScript gradually
+   - Or add JSDoc type hints
+
+---
+
+## 📈 HEALTH SCORE: **68/100**
+
+**Breakdown**:
+- **Security**: 45/100 (Critical vulnerabilities)
+- **Maintainability**: 75/100 (Decent organization, but high complexity)
+- **Code Duplication**: 60/100 (Multiple duplications)
+- **Naming Conventions**: 70/100 (Mostly consistent, some issues)
+- **Code Organization**: 65/100 (Mixed concerns)
+- **Technical Debt**: 65/100 (Moderate debt)
+- **Documentation**: 50/100 (Minimal inline documentation)
+
+**END OF LINE.**

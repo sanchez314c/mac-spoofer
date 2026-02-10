@@ -1,0 +1,331 @@
+{
+  "name": "mac-address-spoofer",
+  "version": "1.0.0",
+  "description": "Cross-platform MAC address spoofing utility with dark mode GUI",
+  "main": "src/main.js",
+  "homepage": "https://github.com/sanchez314c/mac-spoofer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanchez314c/mac-spoofer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sanchez314c/mac-spoofer/issues"
+  },
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "dev": "electron . --dev --no-sandbox",
+    "dist": "electron-builder --mac --win --linux",
+    "dist:all": "electron-builder --mac --win --linux --publish=never",
+    "dist:current": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:mac:all": "electron-builder --mac --x64 --arm64",
+    "dist:mac:store": "electron-builder --mac --config.mac.target=mas",
+    "dist:win": "electron-builder --win",
+    "dist:win:all": "electron-builder --win --x64 --ia32",
+    "dist:win:msi": "electron-builder --win --config.win.target=msi",
+    "dist:win:portable": "electron-builder --win --config.win.target=portable",
+    "dist:linux": "electron-builder --linux",
+    "dist:linux:all": "electron-builder --linux --x64 --arm64 --armv7l",
+    "dist:linux:appimage": "electron-builder --linux --config.linux.target=AppImage",
+    "dist:linux:deb": "electron-builder --linux --config.linux.target=deb",
+    "dist:linux:rpm": "electron-builder --linux --config.linux.target=rpm",
+    "dist:linux:snap": "electron-builder --linux --config.linux.target=snap",
+    "dist:maximum": "electron-builder --mac --win --linux --x64 --arm64 --ia32 --armv7l",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "bloat-check": "./scripts/bloat-check.sh",
+    "temp-clean": "./scripts/temp-cleanup.sh",
+    "build-clean": "./scripts/compile-build-dist.sh --no-temp-clean --no-bloat-check",
+    "build:production": "./scripts/compile-build-dist.sh --platform all",
+    "build:quick": "./scripts/compile-build-dist.sh --quick",
+    "build:mac-only": "./scripts/compile-build-dist.sh --platform mac",
+    "build:win-only": "./scripts/compile-build-dist.sh --platform win",
+    "build:linux-only": "./scripts/compile-build-dist.sh --platform linux",
+    "clean": "rm -rf dist/ build/ out/ node_modules/.cache/ build-temp/",
+    "clean:all": "npm run clean && npm run temp-clean",
+    "deps:update": "npm update",
+    "deps:check": "npm outdated",
+    "deps:audit": "npm audit",
+    "deps:audit:fix": "npm audit fix",
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint src/ --ext .js,.jsx,.ts,.tsx --fix",
+    "type-check": "echo 'TypeScript checking not yet configured for this JavaScript project'",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "test": "echo 'Tests not yet configured'",
+    "prepare": "echo 'Preparation complete'"
+  },
+  "keywords": [
+    "mac-spoofing",
+    "network-tools",
+    "electron",
+    "cross-platform"
+  ],
+  "author": "Jason Paul Michaels",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "@types/node": "^24.9.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "electron-store": "^11.0.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
+  },
+  "build": {
+    "appId": "com.jasonpaulmichaels.macspoofer",
+    "productName": "MAC Address Spoofer",
+    "copyright": "Copyright © 2024 Jason Paul Michaels",
+    "directories": {
+      "output": "dist",
+      "buildResources": "resources"
+    },
+    "files": [
+      "src/**/*",
+      "!**/*.ts",
+      "!**/*.map",
+      "!**/*.md",
+      "!**/test/**",
+      "!**/tests/**",
+      "!**/__tests__/**",
+      "!**/spec/**",
+      "!**/docs/**",
+      "!**/README*",
+      "!**/CHANGELOG*",
+      "!**/LICENSE*",
+      "!**/.git/**",
+      "!**/.vscode/**",
+      "!**/node_modules/.cache/**",
+      "!**/build-temp/**"
+    ],
+    "extraResources": [
+      "src/universal_mac_spoof.py"
+    ],
+    "compression": "maximum",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
+        },
+        {
+          "target": "pkg",
+          "arch": [
+            "x64",
+            "arm64",
+            "universal"
+          ]
+        }
+      ]
+    },
+    "mas": {
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "entitlements": "resources/entitlements.mas.plist",
+      "entitlementsInherit": "resources/entitlements.mas.inherit.plist",
+      "target": {
+        "target": "mas",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      }
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "msi",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MAC Address Spoofer"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "upgradeCode": "12345678-1234-1234-1234-123456789012"
+    },
+    "portable": {
+      "requestExecutionLevel": "user"
+    },
+    "linux": {
+      "category": "Network",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "snap",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "tar.xz",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        }
+      ],
+      "desktop": {
+        "entry": {
+          "Name": "MAC Address Spoofer",
+          "Comment": "Cross-platform MAC address spoofing utility",
+          "Icon": "mac-address-spoofer",
+          "Type": "Application",
+          "Categories": "Network;Utility;",
+          "StartupNotify": "true"
+        }
+      }
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libsecret-1-0"
+      ]
+    },
+    "rpm": {
+      "depends": [
+        "gtk3",
+        "libnotify",
+        "nss",
+        "libXScrnSaver",
+        "libXtst",
+        "xdg-utils",
+        "at-spi2-core",
+        "libuuid",
+        "libsecret"
+      ]
+    },
+    "snap": {
+      "grade": "stable",
+      "summary": "Cross-platform MAC address spoofing utility with dark mode GUI",
+      "confinement": "strict",
+      "base": "core20"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "sanchez314c",
+        "repo": "mac-spoofer"
+      }
+    ]
+  }
+}

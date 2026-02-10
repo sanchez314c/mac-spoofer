@@ -1,0 +1,150 @@
+:root {
+  /* ==================================================
+     NEO-NOIR GLASS MONITOR — DESIGN TOKEN SYSTEM
+     Cyberpunk floating glass panels with 3D depth
+     NO backdrop-filter dependency
+     ================================================== */
+
+  /* ── Backgrounds ── */
+  --bg-void: #0a0b0e;
+  --bg-surface: #111214;
+  --bg-card: #141518;
+  --bg-card-hover: #1a1b1f;
+  --bg-sidebar: #0d0e10;
+  --bg-tertiary: #18191c;
+  --bg-input: #18191c;
+  --bg-modal: rgba(10, 11, 14, 0.94);
+  --bg-tooltip: #222328;
+
+  /* ── Typography Colors ── */
+  --text-primary: #e8e8ec;
+  --text-secondary: #9a9aa6;
+  --text-muted: #5c5c6a;
+  --text-dim: #44444e;
+  --text-heading: #f4f4f7;
+  --text-accent: #14b8a6;
+  --text-inverse: #0a0b0e;
+
+  /* ── Accent Colors ── */
+  --accent-teal: #14b8a6;
+  --accent-teal-dim: rgba(20, 184, 166, 0.12);
+  --accent-teal-glow: rgba(20, 184, 166, 0.25);
+  --accent-teal-hover: #0d9488;
+  --accent-blue: #06b6d4;
+  --accent-blue-dim: rgba(6, 182, 212, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-purple-dim: rgba(139, 92, 246, 0.15);
+  --accent-info: #38bdf8;
+
+  /* ── Status Colors ── */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --status-offline: #52525b;
+  --status-online: #10b981;
+  --status-busy: #ef4444;
+  --status-away: #f59e0b;
+
+  /* ── Borders ── */
+  --border-subtle: #1e1e24;
+  --border-light: #2a2a30;
+  --border-glow: rgba(20, 184, 166, 0.25);
+  --border-input: #2a2a30;
+  --border-focus: #14b8a6;
+
+  /* ── Gradients ── */
+  --gradient-primary: linear-gradient(135deg, #14b8a6, #06b6d4);
+  --gradient-accent: linear-gradient(135deg, #14b8a6, #8b5cf6);
+  --gradient-card: linear-gradient(145deg, #141518, #18191c);
+  --gradient-sidebar: linear-gradient(180deg, #0d0e10, #0a0b0e);
+  --gradient-bg: linear-gradient(160deg, #0a0b0e, #0f1012);
+  --gradient-button: linear-gradient(135deg, #14b8a6, #0d9488);
+  --gradient-header: linear-gradient(90deg, #14b8a6, #06b6d4);
+
+  /* ── Layered Shadow System ── */
+  --shadow-sm:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-md:
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 16px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl:
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 16px 32px rgba(0, 0, 0, 0.2),
+    0 32px 64px rgba(0, 0, 0, 0.25);
+  --shadow-card:
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    0 16px 44px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 16px rgba(20, 184, 166, 0.15);
+  --shadow-glow-strong: 0 0 24px rgba(20, 184, 166, 0.25);
+  --shadow-glow-accent: 0 0 16px rgba(6, 182, 212, 0.15);
+  --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  /* ── Glass Effects (NOT backdrop-filter dependent) ── */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-medium: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-highlight: rgba(255, 255, 255, 0.06);
+  --glass-highlight-strong: rgba(255, 255, 255, 0.10);
+
+  /* ── Border Radius ── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 14px;
+  --radius-button: 10px;
+  --radius-input: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* ── Spacing ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ── Typography ── */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* ── Scrollbar ── */
+  --scrollbar-thumb: #2a2a32;
+  --scrollbar-thumb-hover: #3a3a44;
+
+  /* ── Z-Index ── */
+  --z-base: 0;
+  --z-drag-handle: 50;
+  --z-overlay: 100;
+  --z-window-controls: 200;
+  --z-modal: 999;
+  --z-toast: 10000;
+  --z-tooltip: 10100;
+}
