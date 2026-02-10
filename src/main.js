@@ -20,6 +20,24 @@ class MACSpooferApp {
     this.initializeApp();
   }
 
+  /** Validate interface name — whitelist: alphanumeric, underscore, hyphen, dot */
+  sanitizeInterfaceName(name) {
+    if (typeof name !== 'string' || !/^[a-zA-Z0-9_.\-]{1,32}$/.test(name)) {
+      throw new Error('Invalid interface name');
+    }
+    return name;
+  }
+
+  /** Validate MAC address format strictly */
+  sanitizeMacAddress(mac) {
+    if (typeof mac !== 'string') throw new Error('Invalid MAC address');
+    const normalized = mac.replace(/-/g, ':').toUpperCase();
+    if (!/^([0-9A-F]{2}:){5}[0-9A-F]{2}$/.test(normalized)) {
+      throw new Error('Invalid MAC address format');
+    }
+    return normalized;
+  }
+
   initializeApp() {
     app.whenReady().then(() => {
       this.createWindow();
@@ -169,14 +187,16 @@ class MACSpooferApp {
       'spoof-mac',
       async (event, { interface: interfaceName, mac, random }) => {
         try {
+          const safeInterface = this.sanitizeInterfaceName(interfaceName);
           const pythonCmd = await this.findPythonCommand();
           const pythonScript = this.getPythonScript();
-          const args = [pythonScript, '-i', interfaceName, '--yes']; // Add --yes for auto-confirm
+          const args = [pythonScript, '-i', safeInterface, '--yes'];
 
           if (random) {
             args.push('-r');
           } else if (mac) {
-            args.push('-m', mac);
+            const safeMac = this.sanitizeMacAddress(mac);
+            args.push('-m', safeMac);
           }
 
           const result = await this.authHandler.executeWithAuth(
@@ -197,9 +217,10 @@ class MACSpooferApp {
     // Restore MAC address
     ipcMain.handle('restore-mac', async (event, interfaceName) => {
       try {
+        const safeInterface = this.sanitizeInterfaceName(interfaceName);
         const pythonCmd = await this.findPythonCommand();
         const pythonScript = this.getPythonScript();
-        const args = [pythonScript, '--restore', interfaceName, '--yes']; // Add --yes for auto-confirm
+        const args = [pythonScript, '--restore', safeInterface, '--yes'];
 
         const result = await this.authHandler.executeWithAuth(pythonCmd, args);
         return result;
@@ -223,9 +244,17 @@ class MACSpooferApp {
       return result;
     });
 
-    // Open external link
+    // Open external link — validate protocol to prevent arbitrary code execution
     ipcMain.handle('open-external', async (event, url) => {
-      await shell.openExternal(url);
+      try {
+        const parsed = new URL(url);
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+          return { success: false, error: 'Invalid URL protocol' };
+        }
+        await shell.openExternal(url);
+      } catch {
+        return { success: false, error: 'Invalid URL' };
+      }
     });
 
     // Check admin privileges

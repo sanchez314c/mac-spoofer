@@ -1,3 +1,14 @@
+/** Escape HTML entities to prevent XSS in dynamic innerHTML content */
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 class MACSpooferUI {
   constructor() {
     this.selectedInterface = null;
@@ -191,10 +202,10 @@ class MACSpooferUI {
     interfaceList.innerHTML = this.interfaces
       .map(
         iface => `
-          <div class="interface-item" data-interface="${iface.name}">
+          <div class="interface-item" data-interface="${esc(iface.name)}">
             <div class="interface-info">
-              <h3>${iface.name}</h3>
-              <p>${iface.mac || 'No MAC address'}</p>
+              <h3>${esc(iface.name)}</h3>
+              <p>${esc(iface.mac || 'No MAC address')}</p>
             </div>
             <div class="interface-status">
               <div class="status-badge original">Original</div>
@@ -253,17 +264,17 @@ class MACSpooferUI {
 
     selectedInterface.innerHTML = `
       <div class="selected-info">
-        <h3>${this.selectedInterface.name}</h3>
+        <h3>${esc(this.selectedInterface.name)}</h3>
         <div class="selected-details">
           <span class="label">Current MAC:</span>
-          <span class="value">${this.selectedInterface.mac || 'N/A'}</span>
+          <span class="value">${esc(this.selectedInterface.mac || 'N/A')}</span>
           <span class="label">Status:</span>
           <span class="value">${isSpoofed ? 'Spoofed' : 'Original'}</span>
           ${
             statusInfo?.originalMac
               ? `
               <span class="label">Original MAC:</span>
-              <span class="value">${statusInfo.originalMac}</span>
+              <span class="value">${esc(statusInfo.originalMac)}</span>
           `
               : ''
           }
@@ -508,13 +519,13 @@ class MACSpooferUI {
           <div class="status-item ${status.spoofed ? 'spoofed' : 'original'}">
             <h3>
               ${status.spoofed ? iconSvg.spoofed : iconSvg.original}
-              ${status.name}
+              ${esc(status.name)}
             </h3>
             <div class="status-details">
               <span class="label">Current MAC:</span>
-              <span class="value">${status.currentMac || 'N/A'}</span>
+              <span class="value">${esc(status.currentMac || 'N/A')}</span>
               <span class="label">Original MAC:</span>
-              <span class="value">${status.originalMac || 'Unknown'}</span>
+              <span class="value">${esc(status.originalMac || 'Unknown')}</span>
               <span class="label">Status:</span>
               <span class="value">${status.spoofed ? 'Spoofed' : 'Original'}</span>
             </div>
@@ -582,8 +593,8 @@ class MACSpooferUI {
     toast.innerHTML = `
       <div class="toast-icon">${icons[type] || icons.info}</div>
       <div class="toast-content">
-        <div class="toast-title">${title}</div>
-        <div class="toast-message">${message}</div>
+        <div class="toast-title">${esc(title)}</div>
+        <div class="toast-message">${esc(message)}</div>
       </div>
       <button class="toast-close" aria-label="Close">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
