@@ -1,0 +1,179 @@
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build output
+dist/
+build/
+out/
+release/
+build-temp/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+.env.test
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.stackdump
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+.lock-wscript
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.sw?
+
+# Testing & Coverage
+coverage/
+*.lcov
+.nyc_output/
+junit.xml
+test-results/
+coverage-reports/
+
+# TypeScript
+*.tsbuildinfo
+
+# Cache
+.cache/
+.parcel-cache/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.npm
+.eslintcache
+.stylelintcache
+.grunt
+node_modules/.cache/
+
+# Profiling
+cpuprofile/
+*.prof
+
+# Yarn
+.yarn-integrity
+
+# Build artifacts
+*.tgz
+*.tar.gz
+*.zip
+*.dmg
+*.pkg
+*.msi
+*.exe
+*.deb
+*.rpm
+*.snap
+*.AppImage
+
+# Electron builder
+.electron-builder
+builder-debug.yml
+builder-effective-config.yaml
+dist_electron/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Backup files
+backup/
+*.backup
+*.bak
+*.bak[0-9]
+*.backup.[0-9]
+*.backup.*
+
+# Package manager locks
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Local configuration
+config/local.*
+
+# Next.js / Nuxt.js / Gatsby
+.next
+.nuxt
+
+# Storybook
+.out
+.storybook-out
+
+# REPL
+.node_repl_history
+
+# Archive & Legacy (local only)
+archive/
+legacy/
+
+# Application specific
+MAC Address Spoofer.app alias
